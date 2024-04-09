@@ -17,7 +17,9 @@ def close(exception):
 @app.route("/states_list", strict_slashes=False)
 def states():
     """List all states"""
-    return render_template("7-states_list.html", states=storage.all(State))
+    states = storage.all(State)
+    sorted_states = sorted(states.values(), key=lambda x: x.name)
+    return render_template("7-states_list.html", states=sorted_states)
 
 
 if __name__ == "__main__":
