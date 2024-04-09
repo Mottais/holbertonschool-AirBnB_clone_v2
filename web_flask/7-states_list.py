@@ -8,11 +8,9 @@ from models.state import State
 app = Flask(__name__)
 
 
-# Avec ce décorateur la fonction 'close' est appelée lorsque le contexte
-# de l'application est fermé
 @app.teardown_appcontext
-def close(exeption):
-    """supprimee la session SQLAlchemy en cours"""
+def close(exception):
+    """Close storage"""
     storage.close()
 
 
