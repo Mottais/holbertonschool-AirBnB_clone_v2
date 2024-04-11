@@ -1,26 +1,24 @@
 #!/usr/bin/python3
-"""Module for the different pages with Flask"""
+"""flask app to return web pages depending on routes"""
 from flask import Flask, render_template
-from models import storage
 from models.state import State
-
+from models import storage
 
 app = Flask(__name__)
 
 
-@app.route("/states_list", strict_slashes=False)
-def states():
-    """List all states"""
-    states = storage.all(State)
-    sorted_states = sorted(states.values(), key=lambda x: x.name)
-    return render_template("7-states_list.html", states=sorted_states)
-
-
 @app.teardown_appcontext
-def close(exception):
-    """Close storage"""
+def teardown_storage(something):
+    """this function is called at the end to close storage"""
     storage.close()
 
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+@app.route("/states_list", strict_slashes=False)
+def states_list():
+    """print all states in storage"""
+    state_list = storage.all(State).values()
+    return render_template("7-states_list.html", all_states=state_list)
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
