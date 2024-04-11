@@ -8,18 +8,18 @@ from models.state import State
 app = Flask(__name__)
 
 
-@app.teardown_appcontext
-def close(exception):
-    """Close storage"""
-    storage.close()
-
-
 @app.route("/states_list", strict_slashes=False)
 def states():
     """List all states"""
     states = storage.all(State)
     sorted_states = sorted(states.values(), key=lambda x: x.name)
     return render_template("7-states_list.html", states=sorted_states)
+
+
+@app.teardown_appcontext
+def close(exception):
+    """Close storage"""
+    storage.close()
 
 
 if __name__ == "__main__":
